@@ -8,40 +8,46 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link TileFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class TileFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    public enum TileDisplay {
+        MALE,
+        FEMALE
+    }
+    private static final String ARG_XCOORDINATE = "xCoordinate";
+    private static final String ARG_YCOORDINATE = "yCoordinate";
+    private static final String ARG_ISMINE = "isMine";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    //Coordinates of the tile on the grid
+    private int xCoordinate;
+    private int yCoordinate;
+    //Define the tile content, 1 for a mine, 0 for empty
+    private boolean isMine;
+    //Define the tile status, 1 if revealed, 0 if hidden
+    private boolean isRevealed;
+    //Define the tile flag, 1 if a flag is on the tile, 0 otherwise
+    private boolean isFlag;
+    //Integer value to define the number of mines in proximity to the tile, range from 0 to 8
+    private int proximity;
 
     public TileFragment() {
-        // Required empty public constructor
     }
 
     /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
+     * Create a new tile instance
+     * This tile has no flag and is hidden by default
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param xCoor Horizontal coordinate on the game board.
+     * @param yCoor Vertical coordinate on the game board.
+     * @param isMine Contains a mine if 1, nothing otherwise.
      * @return A new instance of fragment TileFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static TileFragment newInstance(String param1, String param2) {
+    public static TileFragment newInstance(int xCoor, int yCoor, boolean isMine) {
         TileFragment fragment = new TileFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putInt(ARG_XCOORDINATE, xCoor);
+        args.putInt(ARG_YCOORDINATE, yCoor);
+        args.putBoolean(ARG_ISMINE, isMine);
         fragment.setArguments(args);
         return fragment;
     }
@@ -50,15 +56,15 @@ public class TileFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            xCoordinate = getArguments().getInt(ARG_XCOORDINATE);
+            yCoordinate = getArguments().getInt(ARG_YCOORDINATE);
+            isMine = getArguments().getBoolean(ARG_ISMINE);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_tile, container, false);
     }
 }
