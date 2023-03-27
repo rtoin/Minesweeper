@@ -9,11 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 public class TileFragment extends Fragment {
-
-    public enum TileDisplay {
-        MALE,
-        FEMALE
-    }
+    
     private static final String ARG_XCOORDINATE = "xCoordinate";
     private static final String ARG_YCOORDINATE = "yCoordinate";
     private static final String ARG_ISMINE = "isMine";
