@@ -8,7 +8,8 @@ import android.view.View;
 
 import com.eseo.minesweeper.databinding.ActivityMainBinding;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener  {
+
+public class MainActivity extends AppCompatActivity   {
 
     private ActivityMainBinding binding;
 
@@ -21,30 +22,49 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
-        binding.button.setOnClickListener(this);
-        binding.button2.setOnClickListener(this);
-        binding.button3.setOnClickListener(this);
-    }
-    @Override
-    public void onClick(View view) {
-        int ID = view.getId();
-        if(ID == binding.button.getId()) {
-            // Easy Button
-            //my_function(); with number of mines and size as parameters
-        }
-        else if(ID == binding.button2.getId()) {
-            // Normal Button
-            //my_function(); with number of mines and size as parameters
-        }
-        else if(ID == binding.button3.getId()){
-            // Hardcore Button
-            //my_function(); with number of mines and size as parameters
-        }
-        // Here the layers should be created with correct size
-        startActivity(new Intent(this, DetailActivity.class));
+        Intent intent = new Intent(MainActivity.this, GameActivity.class);
+        boolean TOTO = new Boolean(true);
+        binding.button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Easy Button
+                //my_function(); with number of mines and size as parameters
+                intent.putExtra("var1",TOTO);//bomb's position maybe
+                intent.putExtra("var2",TOTO);// number of bombs
+                startActivity(intent);
+
+
+            }
+        });
+
+        binding.button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Normal Button
+                //my_function(); with number of mines and size as parameters
+                intent.putExtra("var1",TOTO); //bomb's position maybe
+                intent.putExtra("var2",TOTO); // number of bombs
+                startActivity(intent);
+
+
+            }
+        });
+        binding.button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Hardcore Button
+                //my_function(); with number of mines and size as parameters
+                intent.putExtra("var1",TOTO);//bomb's position maybe
+                intent.putExtra("var2",TOTO);// number of bombs
+                startActivity(intent);
+
+            }
+        });
+
 
     }
 }

@@ -46,4 +46,13 @@
         app:layout_constraintStart_toStartOf="@+id/button2"
         app:layout_constraintTop_toBottomOf="@+id/button2" />
 
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/ButtonGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:contextClickable="true"
+        android:onClick="onResume"
+        app:constraint_referenced_ids="button,button2,button3" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
