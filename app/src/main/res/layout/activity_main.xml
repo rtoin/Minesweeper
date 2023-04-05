@@ -4,36 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#008689"
     tools:context=".MainActivity">
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="161dp"
-        android:layout_height="39dp"
-        android:layout_marginStart="125dp"
-        android:layout_marginTop="61dp"
-        android:text="MineSweeper"
-        android:textAlignment="center"
-        android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/easyButton"
         android:layout_width="120dp"
         android:layout_height="50dp"
-        android:layout_marginStart="145dp"
-        android:layout_marginTop="157dp"
+        android:layout_marginTop="50dp"
         android:text="Easy"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/iconView" />
 
     <Button
         android:id="@+id/normalButton"
         android:layout_width="120dp"
         android:layout_height="0dp"
-        android:layout_marginTop="52dp"
-        android:text="Normal"
+        android:layout_marginTop="50dp"
+        android:text="Medium"
         app:layout_constraintStart_toStartOf="@+id/easyButton"
         app:layout_constraintTop_toBottomOf="@+id/easyButton" />
 
@@ -41,8 +30,8 @@
         android:id="@+id/hardButton"
         android:layout_width="120dp"
         android:layout_height="50dp"
-        android:layout_marginTop="44dp"
-        android:text="Hardcore"
+        android:layout_marginTop="50dp"
+        android:text="Hard"
         app:layout_constraintStart_toStartOf="@+id/normalButton"
         app:layout_constraintTop_toBottomOf="@+id/normalButton" />
 
@@ -54,5 +43,14 @@
         android:contextClickable="true"
         android:onClick="onResume"
         app:constraint_referenced_ids="easyButton,normalButton,hardButton" />
+
+    <ImageView
+        android:id="@+id/iconView"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:layout_marginTop="100dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/minesweeper_icon" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

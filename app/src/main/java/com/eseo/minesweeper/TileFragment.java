@@ -130,7 +130,38 @@ public class TileFragment extends Fragment {
         return isRevealed;
     }
     public void setRevealed(boolean revealed) {
+        updateColor();
         isRevealed = revealed;
+    }
+
+    public void updateColor() {
+        switch(getValue()) {
+            case 1:
+                binding.tileValue.setTextColor(Color.parseColor("#0000ff"));
+                break;
+            case 2:
+                binding.tileValue.setTextColor(Color.parseColor("#008200"));
+                break;
+            case 3:
+                binding.tileValue.setTextColor(Color.parseColor("#fe0000"));
+                break;
+            case 4:
+                binding.tileValue.setTextColor(Color.parseColor("#000084"));
+                break;
+            case 5:
+                binding.tileValue.setTextColor(Color.parseColor("#840000"));
+                break;
+            case 6:
+                binding.tileValue.setTextColor(Color.parseColor("#840000"));
+                break;
+            case 7:
+                binding.tileValue.setTextColor(Color.parseColor("#840084"));
+                break;
+            case 8:
+            default:
+                binding.tileValue.setTextColor(Color.parseColor("#757575"));
+                break;
+        }
     }
 
     public boolean isFlagged() {

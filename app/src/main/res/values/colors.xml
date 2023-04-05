@@ -7,4 +7,13 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="grey_background">#B9B9B9</color>
+    <color name="tile1_blue">#0000ff</color>
+    <color name="tile2_green">#008200</color>
+    <color name="tile3_red">#fe0000</color>
+    <color name="tile4_darkblue">#000084</color>
+    <color name="tile5_darkred">#840000</color>
+    <color name="tile6_teal">#840000</color>
+    <color name="tile7_pink">#840084</color>
+    <color name="tile8_darkgrey">#757575</color>
 </resources>
