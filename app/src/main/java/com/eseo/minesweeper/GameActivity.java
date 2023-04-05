@@ -128,4 +128,22 @@ public class GameActivity extends AppCompatActivity {
             binding.bombCounter.setText("-"+String.format("%02d", flagCounter - bombsCounter));
         }
     }
+
+    public boolean isVictory() {
+        int hiddenTilesCounter = 0;
+        for(TileFragment t: grid.getTiles()) {
+            if(!t.isRevealed()
+                && t.getValue() != TileFragment.BOMB
+                && t.getValue() != TileFragment.EMPTY)
+            {
+                hiddenTilesCounter++;
+            }
+
+            if(hiddenTilesCounter > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
 }
