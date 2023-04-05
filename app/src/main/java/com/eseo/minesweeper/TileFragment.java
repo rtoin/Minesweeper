@@ -1,6 +1,7 @@
 package com.eseo.minesweeper;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -78,14 +79,6 @@ public class TileFragment extends Fragment {
             public void onClick(View view) {
                 if (!isRevealed()) {
                     ((GameActivity) getActivity()).onTileClick(getX(), getY());
-                    /*
-                    if (getValue() == BOMB) {
-                        binding.tileValue.setText(R.string.bomb);
-                    } else {
-                        binding.tileValue.setText(String.valueOf(getValue()));
-                    }
-                    setRevealed(true);
-                    */
                 }
             }
         });
@@ -94,13 +87,7 @@ public class TileFragment extends Fragment {
             //To place a flag
             public boolean onLongClick(View view) {
                 if(!isRevealed()) {
-                    if(isFlagged()) {
-                        binding.tileValue.setText("");
-                        setFlagged(false);
-                    } else {
-                        binding.tileValue.setText(R.string.flag);
-                        setFlagged(true);
-                    }
+                    ((GameActivity) getActivity()).onTileLongClick(getX(), getY());
                 }
                 return true;
             }
@@ -120,6 +107,7 @@ public class TileFragment extends Fragment {
 
     public void setBomb() {
         binding.tileValue.setText(R.string.bomb);
+        binding.tileValue.setBackgroundColor(Color.parseColor("#E81709"));
     }
 
     public int getValue() {
@@ -150,5 +138,10 @@ public class TileFragment extends Fragment {
     }
     public void setFlagged(boolean flagged) {
         isFlagged = flagged;
+        if(isFlagged) {
+            binding.tileValue.setText(R.string.flag);
+        } else {
+            binding.tileValue.setText("");
+        }
     }
 }

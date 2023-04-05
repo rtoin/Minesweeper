@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity   {
             @Override
             public void onClick(View view) {
                 intent.putExtra("gridSize",5);
-                intent.putExtra("nbrBombs",5);
+                intent.putExtra("nbrBombs",3);
                 startActivity(intent);
             }
         });
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity   {
             @Override
             public void onClick(View view) {
                 intent.putExtra("gridSize",7);
-                intent.putExtra("nbrBombs",10);
+                intent.putExtra("nbrBombs",6);
                 startActivity(intent);
             }
         });
@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity   {
             @Override
             public void onClick(View view) {
                 intent.putExtra("gridSize",9);
-                intent.putExtra("nbrBombs",15);
+                intent.putExtra("nbrBombs",10);
                 startActivity(intent);
             }
         });

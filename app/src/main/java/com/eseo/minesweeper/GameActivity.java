@@ -22,22 +22,30 @@ public class GameActivity extends AppCompatActivity {
     private ActivityGameBinding binding;
     private BoardGrid grid;
 
+    private boolean isGameOver;
+    private int bombsCounter;
+    private int flagCounter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityGameBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        //Init some variables
         Intent intent = getIntent();
         int gridSize = intent.getIntExtra("gridSize",5);
-        int nbrBombs = intent.getIntExtra("nbrBombs",5);
+        bombsCounter = intent.getIntExtra("nbrBombs",3);
+        flagCounter = 0;
+        isGameOver = false;
+        updateFlagCounterDisplay();
 
         //Set the grid layout size
         binding.boardGrid.setColumnCount(gridSize);
         binding.boardGrid.setRowCount(gridSize);
 
         grid = new BoardGrid(gridSize);
-        grid.initBombs(nbrBombs);
+        grid.initBombs(bombsCounter);
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         for(TileFragment t : grid.getTiles()) {
@@ -46,21 +54,27 @@ public class GameActivity extends AppCompatActivity {
         ft.commit();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onTileClick(int x, int y) {
+        if(!isVictory() && !isGameOver()) {
+            reveal(grid.getTile(x, y));
+        }
+
+        checkEndGame();
     }
 
-    protected void onTileClick(int x, int y) {
-        binding.bombCounter.setText(x+"0"+y);
-        reveal(grid.getTile(x, y));
+    protected void onTileLongClick(int x, int y) {
+        if(!isVictory() && !isGameOver()) {
+            flag(grid.getTile(x, y));
+        }
     }
 
     public void reveal(TileFragment tile) {
 
         if(tile.getValue() == TileFragment.BOMB) {
             //Tile is a bomb
-            tile.setBomb();
+            isGameOver = true;
+            grid.revealAllBombs();
+            binding.smiley.setText(R.string.smiley_sad);
         } else if (tile.getValue() == TileFragment.EMPTY) {
             //Tile is a zero
             List<TileFragment> toReveal = new ArrayList<>();
@@ -95,6 +109,53 @@ public class GameActivity extends AppCompatActivity {
             //Tile is greater than 0
             tile.setText(String.valueOf(tile.getValue()));
             tile.setRevealed(true);
+        }
+    }
+
+    public void flag(TileFragment tile) {
+        //Update tile
+        tile.setFlagged(!tile.isFlagged());
+
+        //Update flag counter
+        int cnt = 0;
+        for(TileFragment t: grid.getTiles()) {
+            if(t.isFlagged()) {
+                cnt++;
+            }
+        }
+        flagCounter = cnt;
+
+        updateFlagCounterDisplay();
+    }
+
+    public void updateFlagCounterDisplay() {
+        //Update flag counter display
+        binding.bombCounter.setText(String.format("%03d", bombsCounter - flagCounter));
+    }
+
+    public boolean isGameOver() {
+        return isGameOver;
+    }
+    public boolean isVictory() {
+        int remainingTiles = 0;
+        for(TileFragment t: grid.getTiles()) {
+            if(!t.isRevealed() && t.getValue() != TileFragment.BOMB && t.getValue() != TileFragment.EMPTY) {
+                remainingTiles++;
+            }
+        }
+
+        if(remainingTiles == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void checkEndGame() {
+        if(isVictory()) {
+            binding.result.setText("VICTORY");
+        } else if (isGameOver()) {
+            binding.result.setText("DEFEAT");
         }
     }
 }
