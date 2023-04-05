@@ -20,11 +20,14 @@ public class TileFragment extends Fragment {
 
     private FragmentTileBinding binding;
 
+    //Define the value of the tile, -1 for a bomb, the number of bombs in proximity otherwise
+    public static final int BOMB = -1;
+    private int value = 0;
+
     //Coordinates of the tile on the grid
     private int xCoordinate;
     private int yCoordinate;
-    //Define the tile content, 1 for a mine, 0 for empty
-    private boolean isBomb = false;
+
     //Define the tile status, 1 if revealed, 0 if hidden
     private boolean isRevealed = false;
     //Define the tile flag, 1 if a flag is on the tile, 0 otherwise
@@ -67,16 +70,40 @@ public class TileFragment extends Fragment {
         binding = FragmentTileBinding.inflate(inflater, container, false);
 
         binding.tileValue.setOnClickListener(new View.OnClickListener() {
+
+            //To reveal the tile
             @Override
             public void onClick(View view) {
-                Log.d("Click: ", "("+getX()+";"+getY()+")"+" bombe ? "+isBomb());
-                if(isBomb()) {
-                    binding.tileValue.setText(R.string.bomb);
-                } else {
-                    binding.tileValue.setText("X");
+                Log.d("Click: ", "(" + getX() + ";" + getY() + ")" + " bombe ? " + BOMB);
+
+                if (!isRevealed()) {
+                    if (getValue() == BOMB) {
+                        binding.tileValue.setText(R.string.bomb);
+                    } else {
+                        binding.tileValue.setText(String.valueOf(getValue()));
+                    }
+                    setRevealed(true);
                 }
             }
         });
+
+        binding.tileValue.setOnLongClickListener(new View.OnLongClickListener() {
+            //To place a flag
+            public boolean onLongClick(View view) {
+                if(!isRevealed()) {
+                    if(isFlagged()) {
+                        binding.tileValue.setText("");
+                        setFlagged(false);
+                    } else {
+                        binding.tileValue.setText(R.string.flag);
+                        setFlagged(true);
+                    }
+                }
+                return true;
+            }
+        });
+
+
         return binding.getRoot();
     }
 
@@ -84,8 +111,12 @@ public class TileFragment extends Fragment {
         super.onResume();
     }
 
-    public void setText(String text) {
-        binding.tileValue.setText(text);
+    public int getValue() {
+        return value;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
     }
 
     public int getX() {
@@ -94,13 +125,6 @@ public class TileFragment extends Fragment {
 
     public int getY() {
         return yCoordinate;
-    }
-
-    public boolean isBomb() {
-        return isBomb;
-    }
-    public void setBomb(boolean bomb) {
-        isBomb = bomb;
     }
 
     public boolean isRevealed() {
