@@ -4,55 +4,100 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".GameActivity">
+    tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="410dp"
-        android:layout_height="207dp"
-        android:text="FragmentContainerView"
-        android:textSize="24sp"
-        tools:layout_editor_absoluteX="-3dp"
-        tools:layout_editor_absoluteY="282dp" />
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="415dp"
-        android:layout_height="136dp"
-        android:adjustViewBounds="false"
+    <LinearLayout
+        android:id="@+id/scoreboard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/rectangle_tmp" />
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="411dp"
-        android:layout_height="134dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/rectangle_tmp" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/bomb_counter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:layout_marginRight="32dp"
+            android:text="000"
+            android:textSize="48sp" />
+
+        <TextView
+            android:id="@+id/smiley"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/smiley"
+            android:textSize="48sp" />
+
+        <TextView
+            android:id="@+id/timer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
+            android:text="000"
+            android:textSize="48sp" />
+
+    </LinearLayout>
+
+    <!--
+    <LinearLayout
+        android:id="@+id/board_grid"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        app:layout_constraintHeight_default="percent"
+        app:layout_constraintHeight_percent="0.75"
+        app:layout_constraintTop_toBottomOf="@+id/scoreboard"
+        tools:layout_editor_absoluteX="0dp" />
+
+
+    <GridLayout
+        android:id="@+id/board_grid"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:rowCount="3"
+        android:columnCount="3"
+        app:layout_constraintHeight_default="percent"
+        app:layout_constraintHeight_percent="0.75"
+        app:layout_constraintTop_toBottomOf="@+id/scoreboard"
+        tools:layout_editor_absoluteX="0dp" />
+        -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <GridLayout
+            android:id="@+id/board_grid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="100dp"
+            android:layout_marginTop="10dp"
+            android:columnCount="3"
+            android:rowCount="3"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_centerInParent="true"/>
+    </RelativeLayout>
+
+
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/flag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Score1"
-        tools:layout_editor_absoluteX="20dp"
-        tools:layout_editor_absoluteY="66dp" />
+        android:layout_marginBottom="20dp"
+        android:text="@string/flag"
+        android:textSize="36sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Score1"
-        tools:layout_editor_absoluteX="338dp"
-        tools:layout_editor_absoluteY="66dp" />
-
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="98dp"
-        android:layout_height="87dp"
-        tools:layout_editor_absoluteX="143dp"
-        tools:layout_editor_absoluteY="46dp"
-        tools:srcCompat="@tools:sample/avatars" />
 </androidx.constraintlayout.widget.ConstraintLayout>

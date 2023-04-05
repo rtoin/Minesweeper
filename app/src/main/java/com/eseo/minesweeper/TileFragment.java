@@ -4,15 +4,21 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.eseo.minesweeper.databinding.FragmentTileBinding;
 
 public class TileFragment extends Fragment {
-    
+
     private static final String ARG_XCOORDINATE = "xCoordinate";
     private static final String ARG_YCOORDINATE = "yCoordinate";
     private static final String ARG_ISMINE = "isMine";
+
+    private FragmentTileBinding binding;
 
     //Coordinates of the tile on the grid
     private int xCoordinate;
@@ -39,6 +45,7 @@ public class TileFragment extends Fragment {
      * @return A new instance of fragment TileFragment.
      */
     public static TileFragment newInstance(int xCoor, int yCoor, boolean isMine) {
+        Log.d("Init", String.valueOf(xCoor));
         TileFragment fragment = new TileFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_XCOORDINATE, xCoor);
@@ -51,9 +58,12 @@ public class TileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //Manage arguments
         if (getArguments() != null) {
             xCoordinate = getArguments().getInt(ARG_XCOORDINATE);
             yCoordinate = getArguments().getInt(ARG_YCOORDINATE);
+            Log.d("Init: onCreate ", String.valueOf(getArguments().getInt(ARG_XCOORDINATE)));
             isMine = getArguments().getBoolean(ARG_ISMINE);
         }
     }
@@ -61,6 +71,35 @@ public class TileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_tile, container, false);
+        binding = FragmentTileBinding.inflate(inflater, container, false);
+        binding.tileValue.setText("A");
+
+        binding.tileValue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.tileValue.setText("B");
+            }
+        });
+        return binding.getRoot();
+    }
+
+    public void onResume() {
+        super.onResume();
+    }
+
+    public void setText(String text) {
+        binding.tileValue.setText(text);
+    }
+
+    public int getX() {
+        return xCoordinate;
+    }
+
+    public int getY() {
+        return yCoordinate;
+    }
+
+    public boolean isMine() {
+        return isMine;
     }
 }
