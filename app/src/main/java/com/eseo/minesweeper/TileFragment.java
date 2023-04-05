@@ -93,23 +93,32 @@ public class TileFragment extends Fragment {
             }
         });
 
-
         return binding.getRoot();
     }
 
-    public void onResume() {
-        super.onResume();
-    }
-
+    /**
+     * Set the text of the tile
+     * The images in the tiles are represented with emojis using a string as reference
+     *
+     * @param text The text to display in the tile
+     */
     public void setText(String text) {
         binding.tileValue.setText(text);
     }
 
+    /**
+     * Set a bomb in the tile
+     * Update the image in the tile and the background of the tile
+     */
     public void setBomb() {
         binding.tileValue.setText(R.string.bomb);
         binding.tileValue.setBackgroundColor(Color.parseColor("#E81709"));
     }
 
+    /**
+     * Get and set the value of the tile
+     * The value represents the actual content of the tile, not to be confused with the value to display
+     */
     public int getValue() {
         return value;
     }
@@ -134,6 +143,9 @@ public class TileFragment extends Fragment {
         isRevealed = revealed;
     }
 
+    /**
+     * Update the color of the text to display depending on the value in the tile
+     */
     public void updateColor() {
         switch(getValue()) {
             case 1:
@@ -167,6 +179,13 @@ public class TileFragment extends Fragment {
     public boolean isFlagged() {
         return isFlagged;
     }
+
+    /**
+     * Set or remove the flag
+     * Also update the text (emoji) displayed
+     *
+     * @param flagged The boolean value of the flag
+     */
     public void setFlagged(boolean flagged) {
         isFlagged = flagged;
         if(isFlagged) {

@@ -8,7 +8,11 @@ import android.view.View;
 
 import com.eseo.minesweeper.databinding.ActivityMainBinding;
 
-
+/**
+ * Activity for the main page
+ *
+ * Is the landing page of the app and offers a difficulty choice to the player.
+ */
 public class MainActivity extends AppCompatActivity   {
 
     private ActivityMainBinding binding;
@@ -19,7 +23,6 @@ public class MainActivity extends AppCompatActivity   {
         setContentView(R.layout.activity_main);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
     }
 
     @Override
@@ -37,7 +40,7 @@ public class MainActivity extends AppCompatActivity   {
             }
         });
 
-        //"Normal" button
+        //"Medium" button
         binding.normalButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
