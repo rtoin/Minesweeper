@@ -9,18 +9,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.service.quicksettings.Tile;
 import android.util.Log;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.eseo.minesweeper.databinding.ActivityMainBinding;
 import com.eseo.minesweeper.databinding.ActivityGameBinding;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Activity for the game page
@@ -42,6 +38,7 @@ public class GameActivity extends AppCompatActivity {
 
     private int score;
 
+    private int clock_countdown;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +51,7 @@ public class GameActivity extends AppCompatActivity {
         Bundle bundle = intent.getExtras();
         int gridSize = (int) bundle.getSerializable("gridSize");
         int bombsCounter =(int) bundle.getSerializable("nbrBombs");
+        clock_countdown = 200;
         flagCounter = 0;
         isGameOver = false;
         updateFlagCounterDisplay();
@@ -114,7 +112,7 @@ public class GameActivity extends AppCompatActivity {
                 updateFlagCounterDisplay();
                 isGameOver = false;
                 checkEndGame();
-
+                clock_countdown = 0;
                 //Populate the new grid with new fragments
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 for(TileFragment t : grid.getTiles()) {
@@ -322,6 +320,12 @@ public class GameActivity extends AppCompatActivity {
 
     private void timerCb() {
         Log.i("TIMER", "timerCb: POP");
+
+        if (this.clock_countdown >0){
+            this.clock_countdown = this.clock_countdown -1;
+        }
+        else
+            isGameOver = false;
     }
 
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
