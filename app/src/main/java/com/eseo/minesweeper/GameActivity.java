@@ -3,6 +3,9 @@ package com.eseo.minesweeper;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.BroadcastReceiver;
+import android.content.IntentFilter;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.service.quicksettings.Tile;
@@ -26,6 +29,9 @@ public class GameActivity extends AppCompatActivity {
     private int bombsCounter;
     private int flagCounter;
 
+    private Intent intentService;
+    static public final String BROADCAST = "com.eseo.minesweeper.timer";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +39,7 @@ public class GameActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         //Init some variables
+        intentService = new Intent(this,Timer.class);
         Intent intent = getIntent();
         int gridSize = intent.getIntExtra("gridSize",5);
         bombsCounter = intent.getIntExtra("nbrBombs",3);
@@ -52,6 +59,37 @@ public class GameActivity extends AppCompatActivity {
             ft.add(R.id.board_grid, t);
         }
         ft.commit();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        startService(intentService);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(receiver,new IntentFilter(BROADCAST));
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        unregisterReceiver(receiver);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Log.d("GameAct", "onBackPressed: BACK Pressed");
+        stopService(intentService);
+        super.onBackPressed();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        stopService(intentService);
     }
 
     protected void onTileClick(int x, int y) {
@@ -158,4 +196,15 @@ public class GameActivity extends AppCompatActivity {
             binding.result.setText("DEFEAT");
         }
     }
+
+    private void timerCb() {
+        Log.i("TIMER", "timerCb: POP");
+    }
+
+    private final BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            timerCb();
+        }
+    };
 }
