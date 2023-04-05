@@ -131,37 +131,6 @@ public class GameActivity extends AppCompatActivity {
         stopService(intentService);
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        startService(intentService);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        registerReceiver(receiver,new IntentFilter(BROADCAST));
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        unregisterReceiver(receiver);
-    }
-
-    @Override
-    public void onBackPressed() {
-        Log.d("GameAct", "onBackPressed: BACK Pressed");
-        stopService(intentService);
-        super.onBackPressed();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        stopService(intentService);
-    }
-
     /**
      * Called when a tile is clicked
      *
