@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.service.quicksettings.Tile;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,7 @@ public class TileFragment extends Fragment {
 
     //Define the value of the tile, -1 for a bomb, the number of bombs in proximity otherwise
     public static final int BOMB = -1;
+    public static final int EMPTY = 0;
     private int value = 0;
 
     //Coordinates of the tile on the grid
@@ -74,15 +76,16 @@ public class TileFragment extends Fragment {
             //To reveal the tile
             @Override
             public void onClick(View view) {
-                Log.d("Click: ", "(" + getX() + ";" + getY() + ")" + " bombe ? " + BOMB);
-
                 if (!isRevealed()) {
+                    ((GameActivity) getActivity()).onTileClick(getX(), getY());
+                    /*
                     if (getValue() == BOMB) {
                         binding.tileValue.setText(R.string.bomb);
                     } else {
                         binding.tileValue.setText(String.valueOf(getValue()));
                     }
                     setRevealed(true);
+                    */
                 }
             }
         });
@@ -109,6 +112,14 @@ public class TileFragment extends Fragment {
 
     public void onResume() {
         super.onResume();
+    }
+
+    public void setText(String text) {
+        binding.tileValue.setText(text);
+    }
+
+    public void setBomb() {
+        binding.tileValue.setText(R.string.bomb);
     }
 
     public int getValue() {

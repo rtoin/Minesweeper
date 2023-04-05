@@ -5,7 +5,10 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.service.quicksettings.Tile;
 import android.util.Log;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import com.eseo.minesweeper.databinding.ActivityMainBinding;
 import com.eseo.minesweeper.databinding.ActivityGameBinding;
@@ -46,5 +49,52 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+    }
+
+    protected void onTileClick(int x, int y) {
+        binding.bombCounter.setText(x+"0"+y);
+        reveal(grid.getTile(x, y));
+    }
+
+    public void reveal(TileFragment tile) {
+
+        if(tile.getValue() == TileFragment.BOMB) {
+            //Tile is a bomb
+            tile.setBomb();
+        } else if (tile.getValue() == TileFragment.EMPTY) {
+            //Tile is a zero
+            List<TileFragment> toReveal = new ArrayList<>();
+            List<TileFragment> toCheckAdjacents = new ArrayList<>();
+
+            toCheckAdjacents.add(tile);
+
+            while (toCheckAdjacents.size() > 0) {
+                TileFragment t = toCheckAdjacents.get(0);
+                for(TileFragment adjacent: grid.adjacentTiles(t.getX(), t.getY())) {
+                    if(adjacent.getValue() == TileFragment.EMPTY) {
+                        if (!toReveal.contains(adjacent)) {
+                            if (!toCheckAdjacents.contains(adjacent)) {
+                                toCheckAdjacents.add(adjacent);
+                            }
+                        }
+                    } else {
+                        if (!toReveal.contains(adjacent)) {
+                            toReveal.add(adjacent);
+                        }
+                    }
+                }
+                toCheckAdjacents.remove(t);
+                toReveal.add(t);
+            }
+
+            for (TileFragment t: toReveal) {
+                t.setText(String.valueOf(t.getValue()));
+                t.setRevealed(true);
+            }
+        } else {
+            //Tile is greater than 0
+            tile.setText(String.valueOf(tile.getValue()));
+            tile.setRevealed(true);
+        }
     }
 }
