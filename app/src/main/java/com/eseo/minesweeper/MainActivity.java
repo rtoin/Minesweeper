@@ -31,8 +31,8 @@ public class MainActivity extends AppCompatActivity   {
         binding.easyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                intent.putExtra("gridSize",5);
-                intent.putExtra("nbrBombs",3);
+                intent.putExtra("gridSize",6);
+                intent.putExtra("nbrBombs",5);
                 startActivity(intent);
             }
         });
@@ -41,8 +41,8 @@ public class MainActivity extends AppCompatActivity   {
         binding.normalButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                intent.putExtra("gridSize",7);
-                intent.putExtra("nbrBombs",6);
+                intent.putExtra("gridSize",9);
+                intent.putExtra("nbrBombs",10);
                 startActivity(intent);
             }
         });
@@ -51,8 +51,8 @@ public class MainActivity extends AppCompatActivity   {
         binding.hardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                intent.putExtra("gridSize",9);
-                intent.putExtra("nbrBombs",10);
+                intent.putExtra("gridSize",12);
+                intent.putExtra("nbrBombs",25);
                 startActivity(intent);
             }
         });

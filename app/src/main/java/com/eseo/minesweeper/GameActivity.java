@@ -9,6 +9,7 @@ import android.service.quicksettings.Tile;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.eseo.minesweeper.databinding.ActivityMainBinding;
 import com.eseo.minesweeper.databinding.ActivityGameBinding;
@@ -52,6 +53,33 @@ public class GameActivity extends AppCompatActivity {
             ft.add(R.id.board_grid, t);
         }
         ft.commit();
+
+        //Add listener on smiley
+        TextView smiley = binding.smiley;
+        smiley.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //Purge previous fragments
+                for(TileFragment t : grid.getTiles()) {
+                    getSupportFragmentManager().beginTransaction().remove(t).commit();
+                }
+
+                //Re-init game variables
+                grid = new BoardGrid(gridSize);
+                grid.initBombs(bombsCounter);
+                flagCounter = 0;
+                updateFlagCounterDisplay();
+                isGameOver = false;
+                checkEndGame();
+
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                for(TileFragment t : grid.getTiles()) {
+                    ft.add(R.id.board_grid, t);
+                }
+                ft.commit();
+            }
+        });
     }
 
     protected void onTileClick(int x, int y) {
@@ -74,7 +102,6 @@ public class GameActivity extends AppCompatActivity {
             //Tile is a bomb
             isGameOver = true;
             grid.revealAllBombs();
-            binding.smiley.setText(R.string.smiley_sad);
         } else if (tile.getValue() == TileFragment.EMPTY) {
             //Tile is a zero
             List<TileFragment> toReveal = new ArrayList<>();
@@ -130,7 +157,7 @@ public class GameActivity extends AppCompatActivity {
 
     public void updateFlagCounterDisplay() {
         //Update flag counter display
-        binding.bombCounter.setText(String.format("%03d", bombsCounter - flagCounter));
+        binding.flagCounter.setText(String.format("%03d", bombsCounter - flagCounter));
     }
 
     public boolean isGameOver() {
@@ -154,8 +181,13 @@ public class GameActivity extends AppCompatActivity {
     public void checkEndGame() {
         if(isVictory()) {
             binding.result.setText("VICTORY");
+            binding.smiley.setText(R.string.smiley_happy);
         } else if (isGameOver()) {
             binding.result.setText("DEFEAT");
+            binding.smiley.setText(R.string.smiley_sad);
+        } else {
+            binding.result.setText("");
+            binding.smiley.setText(R.string.smiley);
         }
     }
 }
