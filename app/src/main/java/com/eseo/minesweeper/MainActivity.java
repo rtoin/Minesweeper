@@ -31,8 +31,13 @@ public class MainActivity extends AppCompatActivity   {
         binding.easyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                intent.putExtra("gridSize",5);
-                intent.putExtra("nbrBombs",3);
+                int gridSize = 5;
+                int nbrBombs = 3;
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("gridSize",gridSize);
+                bundle.putSerializable("nbrBombs",nbrBombs);
+                intent.putExtras(bundle);
+
                 startActivity(intent);
             }
         });
@@ -41,8 +46,12 @@ public class MainActivity extends AppCompatActivity   {
         binding.normalButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                intent.putExtra("gridSize",7);
-                intent.putExtra("nbrBombs",6);
+                int gridSize = 7;
+                int nbrBombs = 6;
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("gridSize",gridSize);
+                bundle.putSerializable("nbrBombs",nbrBombs);
+                intent.putExtras(bundle);
                 startActivity(intent);
             }
         });
@@ -56,5 +65,7 @@ public class MainActivity extends AppCompatActivity   {
                 startActivity(intent);
             }
         });
+
+
     }
 }

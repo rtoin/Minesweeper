@@ -3,7 +3,9 @@ package com.eseo.minesweeper;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.service.quicksettings.Tile;
 import android.util.Log;
@@ -26,6 +28,8 @@ public class GameActivity extends AppCompatActivity {
     private int bombsCounter;
     private int flagCounter;
 
+    private int score;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,11 +38,33 @@ public class GameActivity extends AppCompatActivity {
 
         //Init some variables
         Intent intent = getIntent();
-        int gridSize = intent.getIntExtra("gridSize",5);
-        bombsCounter = intent.getIntExtra("nbrBombs",3);
+        Bundle bundle = intent.getExtras();
+        int gridSize = (int) bundle.getSerializable("gridSize");
+        int bombsCounter =(int) bundle.getSerializable("nbrBombs");
         flagCounter = 0;
         isGameOver = false;
         updateFlagCounterDisplay();
+
+        binding.buttonscore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int top1 = readLastScore("SCORE1");
+                int top2 = readLastScore("SCORE2");
+                int top3 = readLastScore("SCORE3");
+                Log.d("test lecture Score1",""+top1);
+                Log.d("test lecture Score2",""+top2);
+                Log.d("test lecture Score3",""+top3);
+                Intent intent2 = new Intent(GameActivity.this, ScoreBoard.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("top1",top1);
+                bundle.putSerializable("top2",top2);
+                bundle.putSerializable("top3",top3);
+                intent2.putExtras(bundle);
+
+                startActivity(intent2);
+            }
+        });
+
 
         //Set the grid layout size
         binding.boardGrid.setColumnCount(gridSize);
@@ -154,8 +180,40 @@ public class GameActivity extends AppCompatActivity {
     public void checkEndGame() {
         if(isVictory()) {
             binding.result.setText("VICTORY");
+
+            int ancien_score1;
+            int ancien_score2;
+            int ancien_score3;
+            ancien_score1= readLastScore("SCORE1");
+            ancien_score2= readLastScore("SCORE2");
+            ancien_score3= readLastScore("SCORE3");
+
+            if (ancien_score1 !=1)
+                if (ancien_score1 < score){
+                    saveScore(this.score,"SCORE1"); //score<ancient_score2
+                }
+            if (ancien_score2 !=1)
+                if ( (ancien_score1 > score) && (ancien_score2<score) ){
+                    saveScore(this.score,"SCORE2"); //ancien_score2<score<ancient_score1
+                }
+            if (ancien_score3 !=1)
+                if ( (ancien_score2 > score) && (ancien_score3<score) ){
+                    saveScore(this.score,"SCORE3");      //ancien_score3<score<ancient_score2
+                }
         } else if (isGameOver()) {
             binding.result.setText("DEFEAT");
         }
     }
+
+    public void saveScore(int score,String text){
+        SharedPreferences sharedPref = getSharedPreferences("application", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putInt(text,score);
+        editor.apply();
+    }
+    int readLastScore(String text) {
+        SharedPreferences sharedPref = getSharedPreferences("application", Context.MODE_PRIVATE);
+        return sharedPref.getInt(text, -1);
+    }
+
 }
