@@ -24,11 +24,11 @@ public class TileFragment extends Fragment {
     private int xCoordinate;
     private int yCoordinate;
     //Define the tile content, 1 for a mine, 0 for empty
-    private boolean isBomb;
+    private boolean isBomb = false;
     //Define the tile status, 1 if revealed, 0 if hidden
-    private boolean isRevealed;
+    private boolean isRevealed = false;
     //Define the tile flag, 1 if a flag is on the tile, 0 otherwise
-    private boolean isFlagged;
+    private boolean isFlagged = false;
 
     public TileFragment() {
     }
@@ -69,7 +69,12 @@ public class TileFragment extends Fragment {
         binding.tileValue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                binding.tileValue.setText(R.string.bomb);
+                Log.d("Click: ", "("+getX()+";"+getY()+")"+" bombe ? "+isBomb());
+                if(isBomb()) {
+                    binding.tileValue.setText(R.string.bomb);
+                } else {
+                    binding.tileValue.setText("X");
+                }
             }
         });
         return binding.getRoot();
@@ -109,6 +114,6 @@ public class TileFragment extends Fragment {
         return isFlagged;
     }
     public void setFlagged(boolean flagged) {
-        isRevealed = flagged;
+        isFlagged = flagged;
     }
 }

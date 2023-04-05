@@ -12,21 +12,41 @@ import com.eseo.minesweeper.databinding.ActivityGameBinding;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class GameActivity extends AppCompatActivity {
 
     private ActivityGameBinding binding;
     private List<TileFragment> tiles;
+
+    private int gridSize;
+    private int nbrBombs;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityGameBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        //Get game parameters from the difficulty selected on the home page
+        initGrid();
+        initBombs();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    /**
+     * Initialise the grid
+     *
+     * Determine the number of lines and columns for the grid from the difficulty
+     * Populate the grid with tiles
+     * Provide to each tile its coordinates in the grid
+     */
+    protected void initGrid() {
+        //Get grid size parameter from the difficulty selected on the home page
         Intent intent = getIntent();
-        int gridSize = intent.getIntExtra("gridSize",5);
-        int nbrBombs = intent.getIntExtra("nbrBombs",5);
+        gridSize = intent.getIntExtra("gridSize",5);
 
         //File the grid
         binding.boardGrid.setColumnCount(gridSize);
@@ -47,8 +67,32 @@ public class GameActivity extends AppCompatActivity {
         ft.commit();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+    /**
+     * Initialise the bombs
+     *
+     * Determine the number of bombs from the difficulty.
+     * Draw random bomb positions and assign the bombs to the tiles.
+     */
+    protected void initBombs() {
+        //Get number of bombs from the difficulty selected on the home page
+        Intent intent = getIntent();
+        nbrBombs = intent.getIntExtra("nbrBombs",5);
+
+        ArrayList<Integer> bombPositions = new ArrayList<>();
+
+        //Draw random bomb positions
+        Random rand = new Random();
+        while(bombPositions.size() < nbrBombs) {
+            int int_random = rand.nextInt(gridSize*gridSize);
+            if(!bombPositions.contains(int_random)) {
+                bombPositions.add(int_random);
+            }
+        }
+
+        //Place the bombs in the tiles
+        for(int i=0; i<bombPositions.size(); i++) {
+            Log.d("Bomb: ", ""+bombPositions.get(i));
+            tiles.get(bombPositions.get(i)).setBomb(true);
+        }
     }
 }
