@@ -93,23 +93,32 @@ public class TileFragment extends Fragment {
             }
         });
 
-
         return binding.getRoot();
     }
 
-    public void onResume() {
-        super.onResume();
-    }
-
+    /**
+     * Set the text of the tile
+     * The images in the tiles are represented with emojis using a string as reference
+     *
+     * @param text The text to display in the tile
+     */
     public void setText(String text) {
         binding.tileValue.setText(text);
     }
 
+    /**
+     * Set a bomb in the tile
+     * Update the image in the tile and the background of the tile
+     */
     public void setBomb() {
         binding.tileValue.setText(R.string.bomb);
         binding.tileValue.setBackgroundColor(Color.parseColor("#E81709"));
     }
 
+    /**
+     * Get and set the value of the tile
+     * The value represents the actual content of the tile, not to be confused with the value to display
+     */
     public int getValue() {
         return value;
     }
@@ -130,12 +139,53 @@ public class TileFragment extends Fragment {
         return isRevealed;
     }
     public void setRevealed(boolean revealed) {
+        updateColor();
         isRevealed = revealed;
+    }
+
+    /**
+     * Update the color of the text to display depending on the value in the tile
+     */
+    public void updateColor() {
+        switch(getValue()) {
+            case 1:
+                binding.tileValue.setTextColor(Color.parseColor("#0000ff"));
+                break;
+            case 2:
+                binding.tileValue.setTextColor(Color.parseColor("#008200"));
+                break;
+            case 3:
+                binding.tileValue.setTextColor(Color.parseColor("#fe0000"));
+                break;
+            case 4:
+                binding.tileValue.setTextColor(Color.parseColor("#000084"));
+                break;
+            case 5:
+                binding.tileValue.setTextColor(Color.parseColor("#840000"));
+                break;
+            case 6:
+                binding.tileValue.setTextColor(Color.parseColor("#840000"));
+                break;
+            case 7:
+                binding.tileValue.setTextColor(Color.parseColor("#840084"));
+                break;
+            case 8:
+            default:
+                binding.tileValue.setTextColor(Color.parseColor("#757575"));
+                break;
+        }
     }
 
     public boolean isFlagged() {
         return isFlagged;
     }
+
+    /**
+     * Set or remove the flag
+     * Also update the text (emoji) displayed
+     *
+     * @param flagged The boolean value of the flag
+     */
     public void setFlagged(boolean flagged) {
         isFlagged = flagged;
         if(isFlagged) {

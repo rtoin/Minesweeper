@@ -15,23 +15,23 @@ import java.util.Random;
 public class BoardGrid {
 
     private ActivityGameBinding binding;
+
+    //The list of tiles forming the board
     private List<TileFragment> tiles;
 
     public List<TileFragment> getTiles() {
         return tiles;
     }
 
-    public int getGridSize() {
-        return gridSize;
-    }
-
-    public int getNbrBombs() {
-        return nbrBombs;
-    }
-
     private int gridSize;
     private int nbrBombs;
 
+    /**
+     * Initialize the board
+     *
+     * Attribute a coordinate for each tile depending on the grid size
+     * @param size Size of the grid (a square)
+     */
     public BoardGrid(int size) {
         this.gridSize = size;
 
@@ -47,8 +47,8 @@ public class BoardGrid {
     /**
      * Initialise the bombs
      *
-     * Determine the number of bombs from the difficulty.
      * Draw random bomb positions and assign the bombs to the tiles.
+     * @param nbrBombs Number of bombs to place
      */
     public void initBombs(int nbrBombs) {
         this.nbrBombs = nbrBombs;
@@ -89,6 +89,9 @@ public class BoardGrid {
         }
     }
 
+    /**
+     * Reveal all bombs (for after a game over)
+     */
     public void revealAllBombs() {
         for(TileFragment tile: tiles) {
             if(tile.getValue() == TileFragment.BOMB) {
@@ -142,5 +145,13 @@ public class BoardGrid {
         }
 
         return adjacentTiles;
+    }
+
+    public int getGridSize() {
+        return gridSize;
+    }
+
+    public int getNbrBombs() {
+        return nbrBombs;
     }
 }
