@@ -48,6 +48,7 @@
     </LinearLayout>
 
     <RelativeLayout
+        android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -55,18 +56,12 @@
             android:id="@+id/board_grid"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:layout_gravity="center_horizontal"
             android:columnCount="3"
-            android:rowCount="3"
             android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_centerInParent="true"/>
-
-        <Button
-            android:id="@+id/buttonscore"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Scoreboard" />
+            android:rowCount="3"
+            app:layout_constraintStart_toStartOf="parent" />
     </RelativeLayout>
 
 
@@ -82,5 +77,15 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/trophyIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/result"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/trophy_icon" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

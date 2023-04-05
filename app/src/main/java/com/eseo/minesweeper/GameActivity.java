@@ -53,31 +53,10 @@ public class GameActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         int gridSize = (int) bundle.getSerializable("gridSize");
-        int bombsCounter =(int) bundle.getSerializable("nbrBombs");
+        bombsCounter = (int) bundle.getSerializable("nbrBombs");
         flagCounter = 0;
         isGameOver = false;
         updateFlagCounterDisplay();
-
-        binding.buttonscore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int top1 = readLastScore("SCORE1");
-                int top2 = readLastScore("SCORE2");
-                int top3 = readLastScore("SCORE3");
-                Log.d("test lecture Score1",""+top1);
-                Log.d("test lecture Score2",""+top2);
-                Log.d("test lecture Score3",""+top3);
-                Intent intent2 = new Intent(GameActivity.this, ScoreBoard.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("top1",top1);
-                bundle.putSerializable("top2",top2);
-                bundle.putSerializable("top3",top3);
-                intent2.putExtras(bundle);
-
-                startActivity(intent2);
-            }
-        });
-
 
         //Set the grid layout size
         binding.boardGrid.setColumnCount(gridSize);
@@ -121,6 +100,26 @@ public class GameActivity extends AppCompatActivity {
                     ft.add(R.id.board_grid, t);
                 }
                 ft.commit();
+            }
+        });
+
+        /**
+         * Add listener on trophy icon for the end game
+         */
+        binding.trophyIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int top1 = readLastScore("SCORE1");
+                int top2 = readLastScore("SCORE2");
+                int top3 = readLastScore("SCORE3");
+                Intent intentScore = new Intent(GameActivity.this, ScoreBoard.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("top1",top1);
+                bundle.putSerializable("top2",top2);
+                bundle.putSerializable("top3",top3);
+                intentScore.putExtras(bundle);
+
+                startActivity(intentScore);
             }
         });
     }
@@ -291,6 +290,7 @@ public class GameActivity extends AppCompatActivity {
         if(isVictory()) {
             binding.result.setText("VICTORY");
             binding.smiley.setText(R.string.smiley_happy);
+            binding.trophyIcon.setVisibility(View.VISIBLE);
 
             int ancien_score1;
             int ancien_score2;
@@ -314,9 +314,11 @@ public class GameActivity extends AppCompatActivity {
         } else if (isGameOver()) {
             binding.result.setText("DEFEAT");
             binding.smiley.setText(R.string.smiley_sad);
+            binding.trophyIcon.setVisibility(View.VISIBLE);
         } else {
             binding.result.setText("");
             binding.smiley.setText(R.string.smiley);
+            binding.trophyIcon.setVisibility(View.INVISIBLE);
         }
     }
 
