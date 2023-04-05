@@ -89,6 +89,14 @@ public class BoardGrid {
         }
     }
 
+    public void revealAllBombs() {
+        for(TileFragment tile: tiles) {
+            if(tile.getValue() == TileFragment.BOMB) {
+                tile.setBomb();
+            }
+        }
+    }
+
     /**
      * Returns tile at coordinates (x;y)
      *

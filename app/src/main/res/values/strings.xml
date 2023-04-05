@@ -2,6 +2,7 @@
     <string name="app_name">Minesweeper</string>
     <!-- Add some emojis to manage the icons of the board -->
     <string name="smiley">😃</string>
+    <string name="smiley_sad">😵</string>
     <string name="flag">🚩</string>
     <string name="bomb">💣</string>
 </resources>

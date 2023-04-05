@@ -55,18 +55,26 @@ public class GameActivity extends AppCompatActivity {
     }
 
     protected void onTileClick(int x, int y) {
-        reveal(grid.getTile(x, y));
+        if(!isVictory() && !isGameOver()) {
+            reveal(grid.getTile(x, y));
+        }
+
+        checkEndGame();
     }
 
     protected void onTileLongClick(int x, int y) {
-        flag(grid.getTile(x, y));
+        if(!isVictory() && !isGameOver()) {
+            flag(grid.getTile(x, y));
+        }
     }
 
     public void reveal(TileFragment tile) {
 
         if(tile.getValue() == TileFragment.BOMB) {
             //Tile is a bomb
-            tile.setBomb();
+            isGameOver = true;
+            grid.revealAllBombs();
+            binding.smiley.setText(R.string.smiley_sad);
         } else if (tile.getValue() == TileFragment.EMPTY) {
             //Tile is a zero
             List<TileFragment> toReveal = new ArrayList<>();
@@ -122,28 +130,32 @@ public class GameActivity extends AppCompatActivity {
 
     public void updateFlagCounterDisplay() {
         //Update flag counter display
-        if(bombsCounter - flagCounter >= 0) {
-            binding.bombCounter.setText(String.format("%03d", bombsCounter - flagCounter));
+        binding.bombCounter.setText(String.format("%03d", bombsCounter - flagCounter));
+    }
+
+    public boolean isGameOver() {
+        return isGameOver;
+    }
+    public boolean isVictory() {
+        int remainingTiles = 0;
+        for(TileFragment t: grid.getTiles()) {
+            if(!t.isRevealed() && t.getValue() != TileFragment.BOMB && t.getValue() != TileFragment.EMPTY) {
+                remainingTiles++;
+            }
+        }
+
+        if(remainingTiles == 0) {
+            return true;
         } else {
-            binding.bombCounter.setText("-"+String.format("%02d", flagCounter - bombsCounter));
+            return false;
         }
     }
 
-    public boolean isVictory() {
-        int hiddenTilesCounter = 0;
-        for(TileFragment t: grid.getTiles()) {
-            if(!t.isRevealed()
-                && t.getValue() != TileFragment.BOMB
-                && t.getValue() != TileFragment.EMPTY)
-            {
-                hiddenTilesCounter++;
-            }
-
-            if(hiddenTilesCounter > 0) {
-                return true;
-            } else {
-                return false;
-            }
+    public void checkEndGame() {
+        if(isVictory()) {
+            binding.result.setText("VICTORY");
+        } else if (isGameOver()) {
+            binding.result.setText("DEFEAT");
         }
     }
 }
