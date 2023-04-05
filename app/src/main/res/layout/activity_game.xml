@@ -43,32 +43,6 @@
 
     </LinearLayout>
 
-    <!--
-    <LinearLayout
-        android:id="@+id/board_grid"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="10dp"
-        android:orientation="vertical"
-        app:layout_constraintHeight_default="percent"
-        app:layout_constraintHeight_percent="0.75"
-        app:layout_constraintTop_toBottomOf="@+id/scoreboard"
-        tools:layout_editor_absoluteX="0dp" />
-
-
-    <GridLayout
-        android:id="@+id/board_grid"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="10dp"
-        android:rowCount="3"
-        android:columnCount="3"
-        app:layout_constraintHeight_default="percent"
-        app:layout_constraintHeight_percent="0.75"
-        app:layout_constraintTop_toBottomOf="@+id/scoreboard"
-        tools:layout_editor_absoluteX="0dp" />
-        -->
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -78,8 +52,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginStart="100dp"
-            android:layout_marginTop="10dp"
             android:columnCount="3"
             android:rowCount="3"
             android:orientation="horizontal"

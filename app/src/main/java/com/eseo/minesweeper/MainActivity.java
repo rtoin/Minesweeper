@@ -26,41 +26,34 @@ public class MainActivity extends AppCompatActivity   {
     public void onResume() {
         super.onResume();
         Intent intent = new Intent(MainActivity.this, GameActivity.class);
-        boolean TOTO = new Boolean(true);
-        binding.button.setOnClickListener(new View.OnClickListener() {
+
+        //"Easy" button
+        binding.easyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Easy Button
-                //my_function(); with number of mines and size as parameters
-                intent.putExtra("var1",TOTO);//bomb's position maybe
-                intent.putExtra("var2",TOTO);// number of bombs
+                intent.putExtra("gridSize",5);
+                intent.putExtra("nbrBombs",5);
                 startActivity(intent);
-
-
             }
         });
 
-        binding.button2.setOnClickListener(new View.OnClickListener() {
+        //"Normal" button
+        binding.normalButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Normal Button
-                //my_function(); with number of mines and size as parameters
-                intent.putExtra("var1",TOTO); //bomb's position maybe
-                intent.putExtra("var2",TOTO); // number of bombs
+                intent.putExtra("gridSize",7);
+                intent.putExtra("nbrBombs",10);
                 startActivity(intent);
-
-
             }
         });
-        binding.button3.setOnClickListener(new View.OnClickListener() {
+
+        //"Hard" button
+        binding.hardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Hardcore Button
-                //my_function(); with number of mines and size as parameters
-                intent.putExtra("var1",TOTO);//bomb's position maybe
-                intent.putExtra("var2",TOTO);// number of bombs
+                intent.putExtra("gridSize",9);
+                intent.putExtra("nbrBombs",15);
                 startActivity(intent);
-
             }
         });
     }

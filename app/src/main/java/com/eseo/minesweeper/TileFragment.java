@@ -1,5 +1,6 @@
 package com.eseo.minesweeper;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -16,7 +17,6 @@ public class TileFragment extends Fragment {
 
     private static final String ARG_XCOORDINATE = "xCoordinate";
     private static final String ARG_YCOORDINATE = "yCoordinate";
-    private static final String ARG_ISMINE = "isMine";
 
     private FragmentTileBinding binding;
 
@@ -24,13 +24,11 @@ public class TileFragment extends Fragment {
     private int xCoordinate;
     private int yCoordinate;
     //Define the tile content, 1 for a mine, 0 for empty
-    private boolean isMine;
+    private boolean isBomb;
     //Define the tile status, 1 if revealed, 0 if hidden
     private boolean isRevealed;
     //Define the tile flag, 1 if a flag is on the tile, 0 otherwise
-    private boolean isFlag;
-    //Integer value to define the number of mines in proximity to the tile, range from 0 to 8
-    private int proximity;
+    private boolean isFlagged;
 
     public TileFragment() {
     }
@@ -41,16 +39,13 @@ public class TileFragment extends Fragment {
      *
      * @param xCoor Horizontal coordinate on the game board.
      * @param yCoor Vertical coordinate on the game board.
-     * @param isMine Contains a mine if 1, nothing otherwise.
      * @return A new instance of fragment TileFragment.
      */
-    public static TileFragment newInstance(int xCoor, int yCoor, boolean isMine) {
-        Log.d("Init", String.valueOf(xCoor));
+    public static TileFragment newInstance(int xCoor, int yCoor) {
         TileFragment fragment = new TileFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_XCOORDINATE, xCoor);
         args.putInt(ARG_YCOORDINATE, yCoor);
-        args.putBoolean(ARG_ISMINE, isMine);
         fragment.setArguments(args);
         return fragment;
     }
@@ -63,8 +58,6 @@ public class TileFragment extends Fragment {
         if (getArguments() != null) {
             xCoordinate = getArguments().getInt(ARG_XCOORDINATE);
             yCoordinate = getArguments().getInt(ARG_YCOORDINATE);
-            Log.d("Init: onCreate ", String.valueOf(getArguments().getInt(ARG_XCOORDINATE)));
-            isMine = getArguments().getBoolean(ARG_ISMINE);
         }
     }
 
@@ -72,12 +65,11 @@ public class TileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentTileBinding.inflate(inflater, container, false);
-        binding.tileValue.setText("A");
 
         binding.tileValue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                binding.tileValue.setText("B");
+                binding.tileValue.setText(R.string.bomb);
             }
         });
         return binding.getRoot();
@@ -99,7 +91,24 @@ public class TileFragment extends Fragment {
         return yCoordinate;
     }
 
-    public boolean isMine() {
-        return isMine;
+    public boolean isBomb() {
+        return isBomb;
+    }
+    public void setBomb(boolean bomb) {
+        isBomb = bomb;
+    }
+
+    public boolean isRevealed() {
+        return isRevealed;
+    }
+    public void setRevealed(boolean revealed) {
+        isRevealed = revealed;
+    }
+
+    public boolean isFlagged() {
+        return isFlagged;
+    }
+    public void setFlagged(boolean flagged) {
+        isRevealed = flagged;
     }
 }

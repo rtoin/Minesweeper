@@ -16,7 +16,6 @@ import java.util.List;
 public class GameActivity extends AppCompatActivity {
 
     private ActivityGameBinding binding;
-    public static final int TILE_COUNT = 9;
     private List<TileFragment> tiles;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,13 +23,21 @@ public class GameActivity extends AppCompatActivity {
         binding = ActivityGameBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        //Get game parameters from the difficulty selected on the home page
         Intent intent = getIntent();
-        boolean var1 = intent.getBooleanExtra("var1",false);
-        boolean var2 = intent.getBooleanExtra("var2",false);
+        int gridSize = intent.getIntExtra("gridSize",5);
+        int nbrBombs = intent.getIntExtra("nbrBombs",5);
 
+        //File the grid
+        binding.boardGrid.setColumnCount(gridSize);
+        binding.boardGrid.setRowCount(gridSize);
         tiles = new ArrayList<>();
-        for(int i=0; i<TILE_COUNT; i++) {
-            tiles.add(TileFragment.newInstance(i, 0, true));
+
+        int line = 1, column = 1;
+        for(int i=0; i<gridSize*gridSize; i++) {
+            line = (i % gridSize) + 1;
+            column = (i / gridSize) + 1;
+            tiles.add(TileFragment.newInstance(line, column));
         }
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
