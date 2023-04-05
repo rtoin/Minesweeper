@@ -30,11 +30,13 @@ public class GameActivity extends AppCompatActivity {
     private BoardGrid grid;
 
     private boolean isGameOver;
+    private boolean isVictory;
     private int bombsCounter;
     private int flagCounter;
 
     private Intent intentService;
     static public final String BROADCAST = "com.eseo.minesweeper.timer";
+    static public final int CHRONO = 300;
 
     private int score;
 
@@ -51,7 +53,8 @@ public class GameActivity extends AppCompatActivity {
         Bundle bundle = intent.getExtras();
         int gridSize = (int) bundle.getSerializable("gridSize");
         bombsCounter = (int) bundle.getSerializable("nbrBombs");
-        clock_countdown = 200;
+        clock_countdown = CHRONO;
+        binding.timer.setText(String.format("%03d", clock_countdown));
         flagCounter = 0;
         isGameOver = false;
         updateFlagCounterDisplay();
@@ -91,7 +94,8 @@ public class GameActivity extends AppCompatActivity {
                 updateFlagCounterDisplay();
                 isGameOver = false;
                 checkEndGame();
-                clock_countdown = 0;
+                clock_countdown = CHRONO;
+
                 //Populate the new grid with new fragments
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 for(TileFragment t : grid.getTiles()) {
@@ -120,37 +124,6 @@ public class GameActivity extends AppCompatActivity {
                 startActivity(intentScore);
             }
         });
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        startService(intentService);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        registerReceiver(receiver,new IntentFilter(BROADCAST));
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        unregisterReceiver(receiver);
-    }
-
-    @Override
-    public void onBackPressed() {
-        Log.d("GameAct", "onBackPressed: BACK Pressed");
-        stopService(intentService);
-        super.onBackPressed();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        stopService(intentService);
     }
 
     /**
@@ -275,8 +248,10 @@ public class GameActivity extends AppCompatActivity {
         }
 
         if(remainingTiles == 0) {
+            isVictory = true;
             return true;
         } else {
+            isVictory = false;
             return false;
         }
     }
@@ -289,6 +264,8 @@ public class GameActivity extends AppCompatActivity {
             binding.result.setText("VICTORY");
             binding.smiley.setText(R.string.smiley_happy);
             binding.trophyIcon.setVisibility(View.VISIBLE);
+
+            calculateScore();   //Update score field
 
             int ancien_score1;
             int ancien_score2;
@@ -313,6 +290,7 @@ public class GameActivity extends AppCompatActivity {
             binding.result.setText("DEFEAT");
             binding.smiley.setText(R.string.smiley_sad);
             binding.trophyIcon.setVisibility(View.VISIBLE);
+            grid.revealAllBombs();  //For when the timer runs out
         } else {
             binding.result.setText("");
             binding.smiley.setText(R.string.smiley);
@@ -320,14 +298,39 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-    private void timerCb() {
-        Log.i("TIMER", "timerCb: POP");
 
-        if (this.clock_countdown >0){
-            this.clock_countdown = this.clock_countdown -1;
-        }
-        else
-            isGameOver = false;
+    /**
+     * Manage the start/pause/end of the timer service
+     */
+    @Override
+    protected void onStart() {
+        super.onStart();
+        startService(intentService);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(receiver,new IntentFilter(BROADCAST));
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        unregisterReceiver(receiver);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Log.d("GameAct", "onBackPressed: BACK Pressed");
+        stopService(intentService);
+        super.onBackPressed();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        stopService(intentService);
     }
 
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -337,15 +340,36 @@ public class GameActivity extends AppCompatActivity {
         }
     };
 
+    /**
+     * Timer callback, triggered once per second
+     */
+    private void timerCb() {
+        if(!isGameOver && !isVictory) {
+            if (this.clock_countdown >0){
+                this.clock_countdown = this.clock_countdown -1;
+            } else {
+                isGameOver = true;
+                checkEndGame();
+            }
+        }
+
+        //Change timer display
+        binding.timer.setText(String.format("%03d", clock_countdown));
+    }
+
     public void saveScore(int score,String text){
         SharedPreferences sharedPref = getSharedPreferences("application", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putInt(text,score);
         editor.apply();
     }
+
     int readLastScore(String text) {
         SharedPreferences sharedPref = getSharedPreferences("application", Context.MODE_PRIVATE);
         return sharedPref.getInt(text, -1);
     }
 
+    public void calculateScore() {
+        score = grid.getNbrBombs() * 3 + clock_countdown;
+    }
 }

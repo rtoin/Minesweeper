@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity   {
         binding.easyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int gridSize = 5;
+                int gridSize = 6;
                 int nbrBombs = 3;
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("gridSize",gridSize);
@@ -49,8 +49,8 @@ public class MainActivity extends AppCompatActivity   {
         binding.normalButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int gridSize = 7;
-                int nbrBombs = 6;
+                int gridSize = 9;
+                int nbrBombs = 10;
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("gridSize",gridSize);
                 bundle.putSerializable("nbrBombs",nbrBombs);
@@ -63,12 +63,14 @@ public class MainActivity extends AppCompatActivity   {
         binding.hardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                intent.putExtra("gridSize",12);
-                intent.putExtra("nbrBombs",25);
+                int gridSize = 12;
+                int nbrBombs = 25;
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("gridSize",gridSize);
+                bundle.putSerializable("nbrBombs",nbrBombs);
+                intent.putExtras(bundle);
                 startActivity(intent);
             }
         });
-
-
     }
 }
